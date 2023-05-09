@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PriceController!{% endblock %}
+
+{% block body %}
+<main>
+    <div class="row mb-3 text-center">
+      {% for price_plan in price_plans %}
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm border-primary">
+            <div class="card-header py-3 text-bg-primary border-primary">
+              <h4 class="my-0 fw-normal">{{ price_plan.name }}</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">${{ price_plan.price }}<small class="text-body-secondary fw-light">/mo</small></h1>
+              <ul class="list-unstyled mt-3 mb-4">
+                {% for benefit in price_plan.benefits %}
+                  <li>{{ benefit.name }}</li>
+                {% endfor %}
+              </ul>
+              <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <h2 class="display-6 text-center mb-4">Compare plans</h2>
+
+    <div class="table-responsive">
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th style="width: 34%;"></th>
+            {% for price_plan in price_plans %}
+              <th style="width: 22%;">{{ price_plan.name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for feature in features %}
+            <tr>
+              <th scope="row" class="text-start">{{ feature.name }}</th>
+              {% for price_plan in price_plans %}
+                <td>
+                  {% if price_plan.hasFeature(feature) %}
+                    <i class="bi bi-check"></i>
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</main>
+{% endblock %}
